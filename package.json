@@ -1,0 +1,79 @@
+{
+  "name": "template-format-core",
+  "version": "0.1.0",
+  "description": "Shared core utilities for Prettier template formatting plugins.",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./source": {
+      "types": "./dist/source.d.ts",
+      "require": "./dist/source.js",
+      "default": "./dist/source.js"
+    },
+    "./html/tags": {
+      "types": "./dist/html/tags.d.ts",
+      "require": "./dist/html/tags.js",
+      "default": "./dist/html/tags.js"
+    },
+    "./text/whitespace": {
+      "types": "./dist/text/whitespace.d.ts",
+      "require": "./dist/text/whitespace.js",
+      "default": "./dist/text/whitespace.js"
+    },
+    "./template/expression": {
+      "types": "./dist/template/expression.d.ts",
+      "require": "./dist/template/expression.js",
+      "default": "./dist/template/expression.js"
+    },
+    "./template/dialect": {
+      "types": "./dist/template/dialect.d.ts",
+      "require": "./dist/template/dialect.js",
+      "default": "./dist/template/dialect.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Poliklot/template-format-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Poliklot/template-format-core/issues"
+  },
+  "homepage": "https://github.com/Poliklot/template-format-core#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "template",
+    "formatter",
+    "prettier",
+    "handlebars",
+    "mustache",
+    "parser",
+    "printer"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.json",
+    "test": "node --test test/*.test.mjs",
+    "check": "npm run build && npm test",
+    "prepublishOnly": "npm run check"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}
