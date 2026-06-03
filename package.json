@@ -1,6 +1,6 @@
 {
   "name": "template-format-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared core utilities for Prettier template formatting plugins.",
   "license": "MIT",
   "type": "commonjs",
@@ -75,5 +75,24 @@
   "devDependencies": {
     "@types/node": "^20.11.0",
     "typescript": "^5.3.3"
+  },
+  "typesVersions": {
+    "*": {
+      "source": [
+        "dist/source.d.ts"
+      ],
+      "html/tags": [
+        "dist/html/tags.d.ts"
+      ],
+      "text/whitespace": [
+        "dist/text/whitespace.d.ts"
+      ],
+      "template/expression": [
+        "dist/template/expression.d.ts"
+      ],
+      "template/dialect": [
+        "dist/template/dialect.d.ts"
+      ]
+    }
   }
 }
