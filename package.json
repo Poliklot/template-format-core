@@ -1,6 +1,6 @@
 {
   "name": "template-format-core",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Shared core utilities for Prettier template formatting plugins.",
   "license": "MIT",
   "type": "commonjs",
