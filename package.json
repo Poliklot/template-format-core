@@ -36,6 +36,26 @@
       "types": "./dist/template/dialect.d.ts",
       "require": "./dist/template/dialect.js",
       "default": "./dist/template/dialect.js"
+    },
+    "./html/embedded-language": {
+      "types": "./dist/html/embedded-language.d.ts",
+      "require": "./dist/html/embedded-language.js",
+      "default": "./dist/html/embedded-language.js"
+    },
+    "./html/raw-regions": {
+      "types": "./dist/html/raw-regions.d.ts",
+      "require": "./dist/html/raw-regions.js",
+      "default": "./dist/html/raw-regions.js"
+    },
+    "./embedding/placeholders": {
+      "types": "./dist/embedding/placeholders.d.ts",
+      "require": "./dist/embedding/placeholders.js",
+      "default": "./dist/embedding/placeholders.js"
+    },
+    "./prettier": {
+      "types": "./dist/prettier/index.d.ts",
+      "require": "./dist/prettier/index.js",
+      "default": "./dist/prettier/index.js"
     }
   },
   "repository": {
@@ -64,17 +84,20 @@
   "files": [
     "dist",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "docs"
   ],
   "scripts": {
     "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.json",
     "test": "node --test test/*.test.mjs",
     "check": "npm run build && npm test",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run check",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "prettier": "^3.9.6"
   },
   "typesVersions": {
     "*": {
@@ -92,7 +115,27 @@
       ],
       "template/dialect": [
         "dist/template/dialect.d.ts"
+      ],
+      "html/embedded-language": [
+        "dist/html/embedded-language.d.ts"
+      ],
+      "html/raw-regions": [
+        "dist/html/raw-regions.d.ts"
+      ],
+      "embedding/placeholders": [
+        "dist/embedding/placeholders.d.ts"
+      ],
+      "prettier": [
+        "dist/prettier/index.d.ts"
       ]
+    }
+  },
+  "peerDependencies": {
+    "prettier": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
     }
   }
 }
