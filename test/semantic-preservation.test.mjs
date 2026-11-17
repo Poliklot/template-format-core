@@ -46,9 +46,11 @@ test('literal source composition preserves gaps and never invents one', () => {
 test('HTML can wrap only at existing ASCII gaps, not adjacency or NBSP', () => {
   const source = 'ab cd\u00a0e';
   const items = [...source].flatMap((char, index) => /[a-e]/.test(char) ? [{ range: [index, index + 1], doc: char.toUpperCase() }] : []);
-  const result = sourceSequenceToDoc(source, [0, source.length], items, 'html');
-  assert.equal(print(result), 'AB CD\u00a0E');
-  assert.equal(print(result, 2), 'AB\nCD\u00a0E');
+  // Prettier 3.0.0 consumes fill parts during printing. Like a real format
+  // lifecycle, each layout must start with a freshly constructed native Doc.
+  const result = () => sourceSequenceToDoc(source, [0, source.length], items, 'html');
+  assert.equal(print(result()), 'AB CD\u00a0E');
+  assert.equal(print(result(), 2), 'AB\nCD\u00a0E');
 });
 
 test('source composition validates ranges rather than losing or duplicating text', () => {
