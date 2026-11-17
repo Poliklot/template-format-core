@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 - 2026-11-17
+
+### Semantic preservation
+
+- Preserve quoted strings, escaped quotes and bracketed path data while normalizing expression whitespace.
+- Recognize block parameters only in a trailing top-level declaration, never inside strings or nested expressions.
+- Preserve Unicode spaces and share linear ASCII-only HTML edge trimming.
+- Add the optional `sourceSequenceToDoc` Prettier adapter to compose source-ranged nodes without inventing separators, losing literal gaps or changing standalone indentation.
+- Cover expression data, HTML whitespace, source gaps and invalid ranges with regression tests.
+- See `docs/semantic-preservation.md` for the coordinated consumer release order and formatting constraints.
+
 ## 0.2.0 - 2026-09-13
 
 ### Shared embedded-language safety
