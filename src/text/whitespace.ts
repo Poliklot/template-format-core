@@ -1,7 +1,18 @@
 export const whitespace = /\s/;
 
+/** Linear edge trimming of HTML's five collapsible characters only. */
+export function trimHtmlWhitespace(value: string): string {
+  let start = 0;
+  let end = value.length;
+  while (start < end && '\t\n\f\r '.includes(value[start])) start += 1;
+  while (end > start && '\t\n\f\r '.includes(value[end - 1])) end -= 1;
+  return value.slice(start, end);
+}
+
 export function normalizeInlineText(value: string): string {
-  return value.replace(/\s+/g, ' ').trim();
+  // HTML collapses only ASCII whitespace. NBSP, narrow NBSP and other Unicode
+  // spaces are content and must never become break opportunities.
+  return value.replace(/[\t\n\f\r ]+/g, ' ').replace(/^ | $/g, '');
 }
 
 export function trimSurroundingBlankLines(lines: string[]): string[] {

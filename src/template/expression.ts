@@ -33,7 +33,30 @@ export function parseTemplateExpression(content: string): TemplateExpression {
 
 export function normalizeTemplateExpression(content: string): string {
   const joined = tokenizeTemplateExpression(content.trim()).join(' ');
-  return joined.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
+  let result = '';
+  let quote: string | null = null;
+  let bracketDepth = 0;
+  for (let index = 0; index < joined.length; index += 1) {
+    const char = joined[index];
+    if (quote) {
+      result += char;
+      if (char === '\\' && index + 1 < joined.length) result += joined[++index];
+      else if (char === quote) quote = null;
+      continue;
+    }
+    if ((char === '"' || char === "'" || char === '`') && isTemplateExpressionQuoteStart(joined, index)) {
+      quote = char;
+    }
+    if (char === '[') bracketDepth += 1;
+    if (char === ']') bracketDepth = Math.max(0, bracketDepth - 1);
+    // Parentheses in a quoted value or a bracketed path are data, not syntax.
+    if (bracketDepth === 0 && char === ')') result = result.trimEnd();
+    result += char;
+    if (bracketDepth === 0 && char === '(') {
+      while (index + 1 < joined.length && whitespace.test(joined[index + 1])) index += 1;
+    }
+  }
+  return result;
 }
 
 export function tokenizeTemplateExpression(content: string): string[] {
@@ -128,7 +151,7 @@ export function isTemplateExpressionQuoteStart(text: string, position: number, e
   }
 
   const previous = text[position - 1];
-  return !previous || whitespace.test(previous) || /[([{=,:~|]/.test(previous);
+  return !previous || whitespace.test(previous) || /[([{=,:~|+*/%!?<>.&-]/.test(previous);
 }
 
 export function splitTemplateParams(tokens: string[]): { params: string[]; hash: TemplateHashPair[] } {
@@ -167,16 +190,17 @@ export function formatTemplateHashPair(pair: TemplateHashPair): string {
 }
 
 function extractBlockParams(content: string): { expression: string; blockParams: string[] } {
-  const match = content.match(/\s+as\s+\|([^|]*)\|/);
-
-  if (!match) {
-    return { expression: content, blockParams: [] };
+  // Only a trailing, top-level `as |...|` is a block parameter declaration.
+  // The tokenizer shields quotes, bracket paths and nested subexpressions.
+  const tokens = tokenizeTemplateExpression(content);
+  const index = tokens.lastIndexOf('as');
+  if (index > 0) {
+    const match = /^\|([^|]*)\|$/.exec(tokens.slice(index + 1).join(' '));
+    if (match) {
+      return { expression: tokens.slice(0, index).join(' '), blockParams: match[1].split(/\s+/).filter(Boolean) };
+    }
   }
-
-  const blockParams = match[1].split(/\s+/).filter(Boolean);
-  const expression = content.replace(match[0], '').trim();
-
-  return { expression, blockParams };
+  return { expression: content, blockParams: [] };
 }
 
 function isHashKey(value: string): boolean {

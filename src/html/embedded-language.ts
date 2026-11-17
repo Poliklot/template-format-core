@@ -1,3 +1,5 @@
+import { trimHtmlWhitespace } from '../text/whitespace';
+
 export type RawTextTag = 'script' | 'style';
 
 export type EmbeddedLanguage =
@@ -14,12 +16,7 @@ export function normalizeAttributeValue(value: string): string {
   // HTML trims only these five ASCII characters, not all String#trim whitespace.
   // Scan each edge once: an unanchored whitespace+$ regexp retries at every
   // interior whitespace position and can take quadratic time on library input.
-  const whitespace = '\t\n\f\r ';
-  let start = 0;
-  let end = value.length;
-  while (start < end && whitespace.includes(value[start])) start += 1;
-  while (end > start && whitespace.includes(value[end - 1])) end -= 1;
-  return value.slice(start, end).toLowerCase();
+  return trimHtmlWhitespace(value).toLowerCase();
 }
 
 export function resolveEmbeddedLanguage(tag: RawTextTag, attrsText: string | ReadonlyMap<string, string | null>): EmbeddedLanguage | null {

@@ -42,3 +42,9 @@ npm publish --access public
 ## Shared embedding work
 
 See [shared embedding architecture and cross-repository dependencies](docs/shared-embedding.md). This source work depends on [the core tracking issue](https://github.com/Poliklot/template-format-core/issues/2).
+
+## Semantic-preserving composition
+
+See [semantic preservation and consumer integration](docs/semantic-preservation.md)
+for quote-aware expression normalization, HTML-only whitespace handling and the
+opt-in `sourceSequenceToDoc` Prettier adapter.
